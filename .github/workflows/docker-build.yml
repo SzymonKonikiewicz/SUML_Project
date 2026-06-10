@@ -1,0 +1,22 @@
+name: CI Docker Build
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Downloading Code
+        uses: actions/checkout@v4
+
+      - run: echo "Building Docker Image file..."
+
+      - name: Building Docker Image
+        run: docker build . --file Dockerfile --tag suml-image:latest
+
+      - run: echo "Docker image file has been built."
