@@ -8,6 +8,8 @@ from Model.Pipeline.Preparation.Clean.clean_data import (
     clean_dataframe,
 )
 
+from Model.Pipeline.pipeline import train_pipeline
+
 df = load_housing_data()
 save_housing_data(df, "Model/Data/Raw/housing_raw.csv", ",")
 print(df.head())
@@ -29,4 +31,9 @@ clean_dataframe(
     target_col="price",
     random_state=42,
     save_path="Model/Data/Clean/housing_calc_read.csv",
+)
+
+train_pipeline(
+    df=df,
+    model_path="Model/Artifacts/housing_price_pipeline.joblib"
 )

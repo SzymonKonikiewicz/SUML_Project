@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import os
 
+from Model.Pipeline.pipeline import predict_price
+
 st.markdown(
     """
 <style>
@@ -67,4 +69,13 @@ if st.button("Przewidywanie ceny", type="primary", use_container_width=True):
     st.dataframe(input_df, hide_index=True)
 
     st.divider()
-    st.subheader("Wyniki:")
+
+    #st.subheader(f"Predicted price: ")
+
+    prediction = predict_price(input_data=user_data)
+    formatted_price = f"{prediction:,.0f}".replace(",", " ")
+
+    st.metric(
+        label="Predicted house price",
+        value=f"{formatted_price} USD",
+    )
