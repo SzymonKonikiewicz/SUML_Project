@@ -1,19 +1,36 @@
 /* style.css */
 
-/* 1. Ukrycie przycisków +/- w nowszych wersjach Streamlit */
+/* Ukrycie przycisków +/- */
 [data-testid="stNumberInputStepUp"],
 [data-testid="stNumberInputStepDown"] {
     display: none !important;
 }
 
-/* 2. Ukrycie natywnych strzałek systemowych w samej przeglądarce */
+/* Ukrycie strzalek */
 input[type="number"]::-webkit-inner-spin-button, 
 input[type="number"]::-webkit-outer-spin-button { 
     -webkit-appearance: none !important; 
     margin: 0 !important; 
 }
 
-/* 3. Wymuszenie wyglądu zwykłego pola tekstowego */
+/* Pole tekstowe */
 input[type="number"] { 
     -moz-appearance: textfield !important; 
 }
+
+/*Wymuszenie kolorow tla, tekstu; .streamlit nie dziala*/
+/*
+[data-testid="stAppViewContainer"] {
+    background-color: #F8F9FA !important;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #FFFFFF !important;
+    border-right: 1px solid #E5E5E5 !important;
+}
+
+html, body, [class*="css"], [class*="st-"] {
+    font-family: sans-serif !important;
+    color: #1E2022 !important;
+}
+*/
