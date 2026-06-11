@@ -1,0 +1,15 @@
+[theme]
+# Główny kolor akcentu (np. przyciski "primary", suwaki, paski ładowania) - tutaj elegancki niebieski
+primaryColor = "#2E66F6"
+
+# Kolor tła głównej aplikacji
+backgroundColor = "#F8F9FA"
+
+# Kolor tła dla paneli bocznych (sidebar) i formularzy
+secondaryBackgroundColor = "#FFFFFF"
+
+# Kolor tekstu
+textColor = "#1E2022"
+
+# Rodzaj czcionki
+font = "sans serif"

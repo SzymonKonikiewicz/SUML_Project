@@ -3,8 +3,7 @@ import pandas as pd
 import joblib
 import os
 
-from Model.Pipeline.pipeline import predict_price
-
+#Data=============
 #Loading the trained model
 
 #Filepaths to models
@@ -25,25 +24,32 @@ def load_model_rforest():
 linear_regression = load_model_linear()
 random_forest = load_model_rforest()
 
-st.markdown(
-    """
-<style>
-    /* Celujemy w wewnętrzne identyfikatory przycisków Streamlit i je ukrywamy */
-    [data-testid="stNumberInputStepUp"] {display: none;}
-    [data-testid="stNumberInputStepDown"] {display: none;}
-</style>
-""",
-    unsafe_allow_html=True,
-)
-
-
 #
 data_path = os.path.join("Model", "Data", "Clean", "housing_calc_read.csv")
 df = pd.read_csv(data_path)
 
+#=================
 
-# Title of the app
-st.title("SUML_Project")
+#Layout===========
+st.set_page_config(
+    page_title="SUML_Project",
+    page_icon=":house:",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+# Loading style sheets
+def load_css(style):
+    try:
+        with open(style) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.error(f"Nie można znaleźć pliku CSS: {style}")
+
+load_css("style.css")
+
+
+
+st.title("Projekt SUML - Predykcja cen nieruchomości")
 st.write("Tutaj będzie krótki opis naszego projektu")
 
 st.divider()

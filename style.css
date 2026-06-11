@@ -1,0 +1,19 @@
+/* style.css */
+
+/* 1. Ukrycie przycisków +/- w nowszych wersjach Streamlit */
+[data-testid="stNumberInputStepUp"],
+[data-testid="stNumberInputStepDown"] {
+    display: none !important;
+}
+
+/* 2. Ukrycie natywnych strzałek systemowych w samej przeglądarce */
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button { 
+    -webkit-appearance: none !important; 
+    margin: 0 !important; 
+}
+
+/* 3. Wymuszenie wyglądu zwykłego pola tekstowego */
+input[type="number"] { 
+    -moz-appearance: textfield !important; 
+}
