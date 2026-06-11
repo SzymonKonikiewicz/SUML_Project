@@ -6,8 +6,8 @@ from Model.Pipeline.pipeline import predict_price
 
 # contains paths to trained models
 available_models = {
-    "linear regressor": "Model/Artifacts/linear_regressor_pipeline.joblib",
-    "random forest regressor": "Model/Artifacts/random_forest_regressor_pipeline.joblib"
+    "linear_regressor": "Model/Artifacts/linear_regressor_pipeline.joblib",
+    "random_forest_regressor": "Model/Artifacts/random_forest_regressor_pipeline.joblib"
 }
 
 st.markdown(
@@ -78,7 +78,10 @@ if st.button("Przewidywanie ceny", type="primary", use_container_width=True):
 
     #st.subheader(f"Predicted price: ")
 
-    model_used = "random forest regressor" # here just replace with user choice
+    model_used = "random_forest_regressor" # here just replace with user choice
+
+    if not available_models.__contains__(model_used):
+        raise NameError(f"Provide existing model, choose one from: {[key for key in available_models.keys()]}")
 
     prediction = predict_price(
         input_data=user_data,
