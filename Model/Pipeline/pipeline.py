@@ -9,10 +9,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 
-from Model.Models.linear_regressor import LinearRegressor
-from Model.Models.random_forest_regressor import RandomForestRegressor
 
-
+# column to be predicted
 TARGET_COL = "price"
 
 NUMERICAL_FEATURES = [
@@ -37,7 +35,11 @@ CATEGORICAL_FEATURES = [
 def build_model_pipeline(regressor) -> Pipeline:
     preprocessor = ColumnTransformer(
         transformers=[
-            ("categorical", OneHotEncoder(handle_unknown="ignore"), CATEGORICAL_FEATURES),
+            (
+                "categorical",
+                OneHotEncoder(handle_unknown="ignore"),
+                CATEGORICAL_FEATURES,
+            ),
             ("numerical", "passthrough", NUMERICAL_FEATURES),
         ]
     )
@@ -89,9 +91,7 @@ def train_pipeline(
     model_path_obj.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(model_pipeline, model_path_obj)
 
-    metrics_path = model_path_obj.with_name(
-        f"{model_path_obj.stem}_metrics.json"
-    )
+    metrics_path = model_path_obj.with_name(f"{model_path_obj.stem}_metrics.json")
     with open(metrics_path, "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=4)
 
@@ -100,18 +100,18 @@ def train_pipeline(
 
     return model_pipeline
 
+
 def load_metrics(model_path: str) -> dict:
     model_path_obj = Path(model_path)
 
-    metrics_path = model_path_obj.with_name(
-        f"{model_path_obj.stem}_metrics.json"
-    )
+    metrics_path = model_path_obj.with_name(f"{model_path_obj.stem}_metrics.json")
 
     if not metrics_path.exists():
         return {}
 
     with open(metrics_path, "r", encoding="utf-8") as f:
         return json.load(f)
+
 
 def load_pipeline(
     model_path: str = "Model/Artifacts/default_pipeline.joblib",
@@ -130,10 +130,4 @@ def predict_price(
 
     metrics = load_metrics(model_path)
 
-    return {
-        "predicted_price": float(prediction),
-        "model_metrics": metrics
-    }
-
-
-  
+    return {"predicted_price": float(prediction), "model_metrics": metrics}
