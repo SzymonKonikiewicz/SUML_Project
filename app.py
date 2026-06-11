@@ -63,7 +63,6 @@ available_metrics = {
     # Add more
 }
 
-
 #=================
 
 
@@ -112,15 +111,16 @@ with st.form("user_input_form", border=True):
 
         with actual:
             if new_df[c].dtype in ["object", "string"] or len(unique_values) <= 2:
+
                 options = unique_values.tolist()
 
                 user_data[c] = st.selectbox(label=f"{c}", options=options)
             else:
-                user_data[c] = st.number_input(label=f"{c}", value=0.0, step=None)
+                user_data[c] = st.number_input(label=f"{c}", value=0, step=1)
 
     st.divider()
 
-    submitted = st.form_submit_button("Wygeneruj predykcję ceny! 😜", type="primary", use_container_width=True)
+    submitted = st.form_submit_button("Wygeneruj predykcję ceny!", type="primary", use_container_width=True)
 
 # test button
 
@@ -163,8 +163,3 @@ if submitted:
 
     except Exception as e:
         st.error(f"Wystąpił błąd podczas predykcji: {e}")
-
-
-
-
-

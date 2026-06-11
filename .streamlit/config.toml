@@ -3,14 +3,44 @@
 base = "light"
 primaryColor = "#D97757"
 backgroundColor = "#F0EEE6"
-secondaryBackgroundColor = "#E3DACC"
+secondaryBackgroundColor = "#e3daccf1"
 textColor = "#3D3A2A"
 font = "sans serif"
 # linkColor = 
 # linkUnderline = true
-#codeBackgroundColor = 
+# codeBackgroundColor = 
+# codeFont = ""
 baseFontSize = 16
 baseFontWeight = 400
 headingFont = "sans serif"
 headingFontSizes = "50px"
+# headingFontWeights = 
+baseRadius = "6px"
+buttonRadius = "large"
+borderColor = "#D97757"
+dataframeBorderColor = "#D97757"
+dataframeHeaderBackgroundColor = "#e3daccf1"
+showWidgetBorder = false
+showSidebarBorder = false
+
+
+
+
+[theme.sidebar]
+
+base = "light"
+primaryColor = "#D97757"
+backgroundColor = "#F0EEE6"
+secondaryBackgroundColor = "#e3daccf1"
+textColor = "#3D3A2A"
+font = "sans serif"
+# linkColor = 
+# linkUnderline = true
+# codeBackgroundColor = 
+# codeFont = ""
+baseFontSize = 16
+baseFontWeight = 400
+headingFont = "sans serif"
+headingFontSizes = "30px"
+# headingFontWeights = 
 
