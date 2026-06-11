@@ -1,0 +1,5 @@
+{
+    "model_path": "Model/Artifacts/linear_regressor_pipeline.joblib",
+    "mae": 948916.4170412591,
+    "r2": 0.6502159262596201
+}

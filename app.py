@@ -4,6 +4,12 @@ import os
 
 from Model.Pipeline.pipeline import predict_price
 
+# contains paths to trained models
+available_models = {
+    "linear regressor": "Model/Artifacts/linear_regressor_pipeline.joblib",
+    "random forest regressor": "Model/Artifacts/random_forest_regressor_pipeline.joblib"
+}
+
 st.markdown(
     """
 <style>
@@ -72,10 +78,15 @@ if st.button("Przewidywanie ceny", type="primary", use_container_width=True):
 
     #st.subheader(f"Predicted price: ")
 
-    prediction = predict_price(input_data=user_data)
+    model_used = "random forest regressor" # here just replace with user choice
+
+    prediction = predict_price(
+        input_data=user_data,
+        model_path=available_models[model_used] 
+    )
     formatted_price = f"{prediction:,.0f}".replace(",", " ")
 
     st.metric(
-        label="Predicted house price",
+        label=f"Predicted house price with '{model_used}' algorithm",
         value=f"{formatted_price} USD",
     )

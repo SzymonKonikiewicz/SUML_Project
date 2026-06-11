@@ -1,0 +1,5 @@
+{
+    "model_path": "Model/Artifacts/random_forest_regressor_pipeline.joblib",
+    "mae": 1021585.0344801223,
+    "r2": 0.6042415440850769
+}

@@ -8,6 +8,8 @@ from Model.Pipeline.Preparation.Clean.clean_data import (
     clean_dataframe,
 )
 
+from Model.Models.linear_regressor import LinearRegressor
+from Model.Models.random_forest_regressor import RandomForestRegressor
 from Model.Pipeline.pipeline import train_pipeline
 
 df = load_housing_data()
@@ -35,5 +37,6 @@ clean_dataframe(
 
 train_pipeline(
     df=df,
-    model_path="Model/Artifacts/housing_price_pipeline.joblib"
+    regressor=LinearRegressor(),
+    model_path="Model/Artifacts/linear_regressor_pipeline.joblib"
 )
