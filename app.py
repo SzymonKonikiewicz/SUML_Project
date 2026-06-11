@@ -1,8 +1,31 @@
 import streamlit as st
 import pandas as pd
+import joblib
 import os
 
 from Model.Pipeline.pipeline import predict_price
+
+#Loading the trained model
+
+#Filepaths to models
+model_path_linear = os.path.join("Model", "Artifacts", "linear_regressor_pipeline.joblib")
+model_path_rforest = os.path.join("Model", "Artifacts", "random_forest_regressor_pipeline.joblib")
+
+#First model: linear regression
+@st.cache_resource
+def load_model_linear():
+    return
+joblib.load(model_path_linear)
+
+#Second model: Random forest
+@st.cache_resource
+def load_model_rforest():
+    return
+joblib.load(model_path_rforest)
+
+
+linear_regression = load_model_linear()
+random_forest = load_model_rforest()
 
 st.markdown(
     """
@@ -18,8 +41,6 @@ st.markdown(
 
 #
 data_path = os.path.join("Model", "Data", "Clean", "housing_calc_read.csv")
-
-#
 df = pd.read_csv(data_path)
 
 
