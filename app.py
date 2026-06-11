@@ -24,6 +24,14 @@ def load_model_rforest():
 linear_regression = load_model_linear()
 random_forest = load_model_rforest()
 
+
+#Available models:
+available_models = {
+    "Random Forest Regressor": random_forest, 
+    "Linear Regression" : linear_regression
+    # Add more
+}
+
 #
 data_path = os.path.join("Model", "Data", "Clean", "housing_calc_read.csv")
 df = pd.read_csv(data_path)
@@ -66,7 +74,7 @@ with st.sidebar:
     st.header("Wybierz model do predykcji ceny: ")
     model_choice = st.selectbox(
         label="Model",
-        options=["Random Forest Regressor", "Linear Regression"],
+        options=list(available_models.keys()),
         index=0,
     )
 
@@ -109,10 +117,8 @@ if submitted:
     st.divider()
 
     try:
-        if model_choice == "Random Forest Regressor":
-            model_used = random_forest
-        else:
-            model_used = linear_regression
+        model_used = available_models.get(model_choice)
+
 
         prediction = model_used.predict(input_df)[0]
         formatted_price = f"{prediction:,.0f}".replace(",", " ")
