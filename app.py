@@ -2,28 +2,53 @@ import streamlit as st
 import pandas as pd
 import joblib
 import os
+import json
 
-#Data=============
+#=============
 #Loading the trained model
 
 #Filepaths to models
 model_path_linear = os.path.join("Model", "Artifacts", "linear_regressor_pipeline.joblib")
 model_path_rforest = os.path.join("Model", "Artifacts", "random_forest_regressor_pipeline.joblib")
 
-#First model: linear regression
+#Filepaths to metrics
+metrics_path_linear = os.path.join("Model", "Artifacts", "linear_regressor_pipeline_metrics.json")
+metrics_path_rforest = os.path.join("Model", "Artifacts", "random_forest_regressor_pipeline_metrics.json")
+
+#Filepath to data, load data
+data_path = os.path.join("Model", "Data", "Clean", "housing_calc_read.csv")
+df = pd.read_csv(data_path)
+
+#Loading style sheets
+def load_css(style):
+    try:
+        with open(style) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.error(f"Nie można znaleźć pliku CSS: {style}")
+
+#Loading metrics
+def load_metrics(metrics_path):
+    try:
+        with open(metrics_path, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        st.error(f"Nie można znaleźć pliku z metrykami: {metrics_path}")
+        return None
+
+#Linear regression model
 @st.cache_resource
 def load_model_linear():
     return joblib.load(model_path_linear)
 
-#Second model: Random forest
+#Random forest model
 @st.cache_resource
 def load_model_rforest():
     return joblib.load(model_path_rforest)
 
-
+#Loading models
 linear_regression = load_model_linear()
 random_forest = load_model_rforest()
-
 
 #Available models:
 available_models = {
@@ -32,11 +57,15 @@ available_models = {
     # Add more
 }
 
-#
-data_path = os.path.join("Model", "Data", "Clean", "housing_calc_read.csv")
-df = pd.read_csv(data_path)
+available_metrics = {
+    "Random Forest Regressor": load_metrics(metrics_path_rforest),
+    "Linear Regression": load_metrics(metrics_path_linear)
+    # Add more
+}
+
 
 #=================
+
 
 #Layout===========
 st.set_page_config(
@@ -45,17 +74,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-# Loading style sheets
-def load_css(style):
-    try:
-        with open(style) as f:
-            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    except FileNotFoundError:
-        st.error(f"Nie można znaleźć pliku CSS: {style}")
 
 load_css("style.css")
-
-
 
 st.title("Projekt SUML - Predykcja cen nieruchomości")
 st.write("Tutaj będzie krótki opis naszego projektu")
@@ -83,8 +103,6 @@ with st.form("user_input_form", border=True):
         # Panel for user input
     columns = st.columns(4)
 
-
-
     for index, c in enumerate(column_names):
         actual = columns[index % 4]
 
@@ -104,7 +122,6 @@ with st.form("user_input_form", border=True):
 
     submitted = st.form_submit_button("Wygeneruj predykcję ceny! 😜", type="primary", use_container_width=True)
 
-
 # test button
 
 if submitted:
@@ -119,7 +136,6 @@ if submitted:
     try:
         model_used = available_models.get(model_choice)
 
-
         prediction = model_used.predict(input_df)[0]
         formatted_price = f"{prediction:,.0f}".replace(",", " ")
 
@@ -128,7 +144,27 @@ if submitted:
             value=f"{formatted_price} USD",
         )
 
+        mae_value = available_metrics[model_choice].get("mae", None)
+        r2_value = available_metrics[model_choice].get("r2", None)
+
+        st.metric(
+            label="mae",
+            value=mae_value
+            #value=f"{mae_value:,.0f}".replace(',', '')
+        )
+
+        st.metric(
+            label="R²",
+            value=r2_value
+            #value=f"{r2_value:,.0f}".replace(',', '')
+        )
+
         st.balloons()
 
     except Exception as e:
         st.error(f"Wystąpił błąd podczas predykcji: {e}")
+
+
+
+
+

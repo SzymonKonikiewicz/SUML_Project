@@ -11,4 +11,6 @@ font = "sans serif"
 #codeBackgroundColor = 
 baseFontSize = 16
 baseFontWeight = 400
+headingFont = "sans serif"
+headingFontSizes = "50px"
 
