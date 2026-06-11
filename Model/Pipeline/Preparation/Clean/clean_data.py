@@ -3,34 +3,35 @@ import numpy as np
 from enum import Enum
 from pathlib import Path
 
+
 class ColType(Enum):
     NUMERICAL = "numerical"
     CATEGORICAL = "categorical"
     NOMINAL = "nominal"
 
-def establish_col_type(
-        col = pd.Series
-)-> type:
+
+def establish_col_type(col=pd.Series) -> type:
     if pd.api.types.is_numeric_dtype(col):
         unique_count = col.nunique(dropna=True)
 
         if unique_count <= 10:
             return ColType.CATEGORICAL
-        
+
         return ColType.NUMERICAL
-    
+
     if pd.api.types.is_bool_dtype(col):
         return ColType.CATEGORICAL
-    
+
     if pd.api.types.is_object_dtype(col) or pd.api.types.is_categorical_dtype(col):
         unique_count = col.nunique(dropna=True)
 
         if unique_count >= 20:
             return ColType.NOMINAL
-        
+
         return ColType.CATEGORICAL
-    
+
     return ColType.CATEGORICAL
+
 
 def describe_column(
     df: pd.DataFrame,
@@ -90,6 +91,7 @@ def describe_column(
             print("\nWarning: This column looks like an identifier or free-text label.")
             print("It may not be useful directly as a model feature.")
 
+
 # if save_path is None then no csv will be created nor overrided
 def clean_column(
     df: pd.DataFrame,
@@ -132,6 +134,7 @@ def clean_column(
         cleaned_df.to_csv(save_path, index=False)
 
     return cleaned_df
+
 
 def clean_dataframe(
     df: pd.DataFrame,
