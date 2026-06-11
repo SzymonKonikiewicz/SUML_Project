@@ -1,5 +1,3 @@
-import numpy as np
-import pandas as pd
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.linear_model import LinearRegression
 
@@ -9,9 +7,7 @@ class LinearRegressor(BaseEstimator, RegressorMixin):
         self.fit_intercept = fit_intercept
 
     def fit(self, X, y):
-        self.model_ = LinearRegression(
-            fit_intercept=self.fit_intercept
-        )
+        self.model_ = LinearRegression(fit_intercept=self.fit_intercept)
         self.model_.fit(X, y)
         return self
 
