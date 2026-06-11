@@ -100,6 +100,18 @@ def train_pipeline(
 
     return model_pipeline
 
+def load_metrics(model_path: str) -> dict:
+    model_path_obj = Path(model_path)
+
+    metrics_path = model_path_obj.with_name(
+        f"{model_path_obj.stem}_metrics.json"
+    )
+
+    if not metrics_path.exists():
+        return {}
+
+    with open(metrics_path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 def load_pipeline(
     model_path: str = "Model/Artifacts/default_pipeline.joblib",
@@ -116,7 +128,12 @@ def predict_price(
     input_df = pd.DataFrame([input_data])
     prediction = model_pipeline.predict(input_df)[0]
 
-    return float(prediction)
+    metrics = load_metrics(model_path)
+
+    return {
+        "predicted_price": float(prediction),
+        "model_metrics": metrics
+    }
 
 
   

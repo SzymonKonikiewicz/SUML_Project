@@ -83,13 +83,29 @@ if st.button("Przewidywanie ceny", type="primary", use_container_width=True):
     if not available_models.__contains__(model_used):
         raise NameError(f"Provide existing model, choose one from: {[key for key in available_models.keys()]}")
 
+    # "predicted_price" - numerical value, estimated price
+    # "model_metrics" - shows performance of model, evaluated with MAE and R2 scores
     prediction = predict_price(
         input_data=user_data,
         model_path=available_models[model_used] 
     )
-    formatted_price = f"{prediction:,.0f}".replace(",", " ")
+    formatted_price = f"{prediction["predicted_price"]:,.0f}".replace(",", " ")
+    metrics = prediction["model_metrics"]
+
+    mae = metrics["mae"]
+    r2 = metrics["r2"]
 
     st.metric(
         label=f"Predicted house price with '{model_used}' algorithm",
         value=f"{formatted_price} USD",
     )
+
+    mae_formatted = f"{metrics['mae']:,.0f}".replace(",", " ")
+    r2_formatted = f"{metrics['r2']:.3f}"
+
+    st.markdown(
+        f"**Regressor metrics:**  \n"
+        f"MAE: {mae_formatted} USD  \n"
+        f"R²: {r2_formatted}"
+    )
+
