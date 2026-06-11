@@ -14,14 +14,12 @@ model_path_rforest = os.path.join("Model", "Artifacts", "random_forest_regressor
 #First model: linear regression
 @st.cache_resource
 def load_model_linear():
-    return
-joblib.load(model_path_linear)
+    return joblib.load(model_path_linear)
 
 #Second model: Random forest
 @st.cache_resource
 def load_model_rforest():
-    return
-joblib.load(model_path_rforest)
+    return joblib.load(model_path_rforest)
 
 
 linear_regression = load_model_linear()
@@ -59,9 +57,19 @@ new_df = df.drop(columns=["price"])
 
 column_names = new_df.columns.tolist()
 
+# Side panel
+with st.sidebar:
+    st.header("Wybierz model do predykcji ceny: ")
+    model_choice = st.selectbox(
+        label="Model",
+        options=["Random Forest Regressor", "Linear Regression"],
+        index=0,
+    )
 
+
+
+# Panel for user input
 columns = st.columns(4)
-
 
 for index, c in enumerate(column_names):
     actual = columns[index % 4]
@@ -91,12 +99,21 @@ if st.button("Przewidywanie ceny", type="primary", use_container_width=True):
 
     st.divider()
 
-    #st.subheader(f"Predicted price: ")
+    try:
+        if model_choice == "Random Forest Regressor":
+            model_used = random_forest
+        else:
+            model_used = linear_regression
 
-    prediction = predict_price(input_data=user_data)
-    formatted_price = f"{prediction:,.0f}".replace(",", " ")
+        prediction = model_used.predict(input_df)[0]
+        formatted_price = f"{prediction:,.0f}".replace(",", " ")
 
-    st.metric(
-        label="Predicted house price",
-        value=f"{formatted_price} USD",
-    )
+        st.metric(
+            label=f"Szacowana wartość ({model_choice})",
+            value=f"{formatted_price} USD",
+        )
+
+        st.balloons()
+
+    except Exception as e:
+        st.error(f"Wystąpił błąd podczas predykcji: {e}")
