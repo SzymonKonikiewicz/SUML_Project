@@ -50,7 +50,7 @@ def load_model_rforest():
 linear_regression = load_model_linear()
 random_forest = load_model_rforest()
 
-#Available models:
+#Available models and metrics:
 available_models = {
     "Random Forest Regressor": random_forest, 
     "Linear Regression" : linear_regression
@@ -67,6 +67,8 @@ available_metrics = {
 
 
 #Layout===========
+
+
 st.set_page_config(
     page_title="SUML_Project",
     page_icon=":house:",
@@ -77,18 +79,46 @@ st.set_page_config(
 load_css("style.css")
 
 st.title("Projekt SUML - Predykcja cen nieruchomości")
-st.write("Tutaj będzie krótki opis naszego projektu")
+st.write("Nasza aplikacja umożliwia szacowanie wartosci nieruchomości luksusowych " \
+"na podstawie danych dotyczących cen mieszkań w dzielnicach Nowego Jorku." \
+" Wykorzystujemy dwa modele: Random Forest Regressor oraz Linear Regression, " \
+"które zostały przeszkolone na danych dotyczących różnych cech mieszkań wyszczególnionych poniżej. " \
+"Dzięki temu możemy dostarczyć użytkownikom dokładne prognozy cen nieruchomości " \
+"na podstawie wprowadzonych parametrów.")
 
 st.divider()
-
-user_data = {}
 
 # New data frame without a price column
 new_df = df.drop(columns=["price"])
 
 column_names = new_df.columns.tolist()
 
-# Side panel
+#Fields shown to the user
+available_fields = {
+    column_names[0]: "Powierzchnia (m²)",
+    column_names[1]: "Liczba sypialni",
+    column_names[2]: "Liczba łazienek",
+    column_names[3]: "Piętro",
+    column_names[4]: "Przy głównej ulicy",
+    column_names[5]: "Pokój gościnny",
+    column_names[6]: "Piwnica",
+    column_names[7]: "Centralne ogrzewanie",
+    column_names[8]: "Klimatyzacja",
+    column_names[9]: "Liczba miejsc parkingowych",
+    column_names[10]: "Dobra lokalizacja",
+    column_names[11]: "Status umeblowania"
+    # Add more if needed or if dataset changes
+}   
+
+basic_translation = {
+    "yes": "Tak",
+    "no": "Nie",
+    "furnished": "Umeblowane",
+    "unfurnished": "Nieumeblowane",
+    "semi-furnished": "Pół umeblowane"
+}
+
+# Side panel with model choice
 with st.sidebar:
     st.header("Wybierz model do predykcji ceny: ")
     model_choice = st.selectbox(
@@ -97,12 +127,16 @@ with st.sidebar:
         index=0,
     )
 
+# Panel for user input
+user_data = {}
+
 st.header("Parametry mieszkania")
 with st.form("user_input_form", border=True):
-        # Panel for user input
     columns = st.columns(4)
 
     for index, c in enumerate(column_names):
+
+        # Automatic column assignment for user input fields
         actual = columns[index % 4]
 
         unique_values = new_df[c].dropna().unique()
@@ -114,17 +148,36 @@ with st.form("user_input_form", border=True):
 
                 options = unique_values.tolist()
 
-                user_data[c] = st.selectbox(label=f"{c}", options=options)
+                user_data[c] = st.selectbox(
+                    label=available_fields.get(c, c), 
+                    options=options, 
+                    index=None,
+                    placeholder="Wybierz opcję",
+                    format_func=lambda x: basic_translation.get(x, x)
+                )
             else:
-                user_data[c] = st.number_input(label=f"{c}", value=0, step=1)
+                user_data[c] = st.number_input(
+                    label=f"{available_fields.get(c, c)}", 
+                    value=None,
+                    placeholder="Wprowadź wartość",
+                    step=1,
+                    min_value=0)
 
     st.divider()
 
     submitted = st.form_submit_button("Wygeneruj predykcję ceny!", type="primary", use_container_width=True)
 
-# test button
+# test button using forms
 
 if submitted:
+    # Check if user has filled all fields, if not show error message with missing fields
+    missing_fields = [available_fields.get(key, key) for key, value in user_data.items() if value is None]
+
+    if missing_fields:
+        st.error(f"Proszę uzupełnić wszystkie pola przed wygenerowaniem predykcji. Brakujące pola: {', '.join(missing_fields)}")
+        st.stop()
+
+
     input_df = pd.DataFrame([user_data])
 
     st.write("Podgląd inputu użytkownika")
@@ -147,16 +200,16 @@ if submitted:
         mae_value = available_metrics[model_choice].get("mae", None)
         r2_value = available_metrics[model_choice].get("r2", None)
 
+        st.divider()
+        st.write("Metryki modelu:")
         st.metric(
-            label="mae",
-            value=mae_value
-            #value=f"{mae_value:,.0f}".replace(',', '')
+            label="Wartość wskaźnika MAE",
+            value=f"{mae_value:.2f}"
         )
 
         st.metric(
-            label="R²",
-            value=r2_value
-            #value=f"{r2_value:,.0f}".replace(',', '')
+            label="Wartość wskaźnika R²",
+            value=f"{r2_value:.4f}"
         )
 
         st.balloons()
