@@ -1,4 +1,30 @@
-env/
+# Virtual environments
 .venv/
+env/
+
+# Dev tools and IDE
 .idea/
+.git/
+.github/
+
+# Cache and temp files
+.ruff_cache/
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Config files (dev environment)
+.gitignore
+.pre-commit-config.yaml
+requirements-dev.txt
+
+# Docker Files
+Dockerfile
+.dockerignore
+
+# Terraform files
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
