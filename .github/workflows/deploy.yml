@@ -1,0 +1,34 @@
+name: Deploy to Azure Container App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download code
+        uses: actions/checkout@v4
+
+      - name: Log to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Log to Azure Container Registry
+        run: az acr login --name acrflatpreddevplc
+
+      - name: Building and pushing Docker image
+        run: |
+          docker build -t acrflatpreddevplc.azurecr.io/flat-pred:${{ github.sha }}
+          docker push acrflatpreddevplc.azurecr.io/flat-pred:{{ github.sha }}
+
+      - name: Update Container App
+        run: |
+          az containerapp update \
+            --name ca-flatpred-dev-plc \
+            --resource-group rg-flatpred-dev-plc \
+            --image acrflatpreddevplc.azurecr.io/flat-pred:{{ github.sha }}
