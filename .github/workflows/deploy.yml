@@ -23,7 +23,7 @@ jobs:
 
       - name: Building and pushing Docker image
         run: |
-          docker build -t acrflatpreddevplc.azurecr.io/flat-pred:${{ github.sha }}
+          docker build -t acrflatpreddevplc.azurecr.io/flat-pred:${{ github.sha }} .
           docker push acrflatpreddevplc.azurecr.io/flat-pred:${{ github.sha }}
 
       - name: Update Container App
