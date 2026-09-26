@@ -1,6 +1,6 @@
 # 🗽 NYC Real Estate Price Predictor (SUML Project)
 
-A Streamlit web application designed to estimate the value of luxury real estate in New York City[cite: 2]. The application allows users to input various property characteristics and generates an estimated price using trained machine learning models[cite: 2].
+A Streamlit web application designed to estimate the value of luxury real estate in New York City[cite: 2]. The application allows users to input various property characteristics and generates an estimated price using trained machine learning models.
 
 ## 🛠 Technologies Used
 * **Languages:** Python 3.13
@@ -9,15 +9,15 @@ A Streamlit web application designed to estimate the value of luxury real estate
 * **Infrastructure:** Docker, Terraform
 
 ## 🧠 Machine Learning Models
-Users can choose between two models for prediction from the sidebar menu[cite: 2]:
-* **Random Forest Regressor**[cite: 2]
-* **Linear Regression**[cite: 2]
+Users can choose between two models for prediction from the sidebar menu:
+* **Random Forest Regressor**
+* **Linear Regression**
 
 ## 📋 Input Parameters
-The application calculates predictions based on the following property features[cite: 2]:
-* **Basic Specs:** Area (m²), Number of bedrooms, Number of bathrooms, Floor[cite: 2]
-* **Amenities:** Guest room, Basement, Central heating, Air conditioning, Number of parking spaces[cite: 2]
-* **Location & Status:** Proximity to main road, Good location, Furnishing status[cite: 2]
+The application calculates predictions based on the following property features:
+* **Basic Specs:** Area (m²), Number of bedrooms, Number of bathrooms, Floor
+* **Amenities:** Guest room, Basement, Central heating, Air conditioning, Number of parking spaces
+* **Location & Status:** Proximity to main road, Good location, Furnishing status
 
 ## 🚀 Quick Start
 
